@@ -1,4 +1,4 @@
-﻿namespace HelloFSharpLib.AssemblyInfo
+﻿namespace FSharpHl7Parser.AssemblyInfo
 
 open System.Reflection
 open System.Runtime.CompilerServices
@@ -7,11 +7,11 @@ open System.Runtime.InteropServices
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[<assembly: AssemblyTitle("HelloFSharpLib")>]
+[<assembly: AssemblyTitle("FSharpHl7Parser")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]
-[<assembly: AssemblyProduct("HelloFSharpLib")>]
+[<assembly: AssemblyProduct("FSharpHl7Parser")>]
 [<assembly: AssemblyCopyright("Copyright ©  2016")>]
 [<assembly: AssemblyTrademark("")>]
 [<assembly: AssemblyCulture("")>]
@@ -22,7 +22,7 @@ open System.Runtime.InteropServices
 [<assembly: ComVisible(false)>]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[<assembly: Guid("2898f7f5-b039-4a53-9872-985602ae988b")>]
+[<assembly: Guid("586f94f7-42be-4bd4-8d0d-f581da65e9c6")>]
 
 // Version information for an assembly consists of the following four values:
 // 
