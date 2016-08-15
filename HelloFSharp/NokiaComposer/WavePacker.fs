@@ -1,4 +1,5 @@
-﻿#load "signal_generator.fsx"
+﻿module WavePacker
+
 open System.IO
 open System.Text
 
@@ -32,6 +33,6 @@ let write fileName (ms:MemoryStream) =
     use fs = new FileStream(Path.Combine(__SOURCE_DIRECTORY__, fileName), FileMode.Create)
     ms.WriteTo(fs)
 
-Array.ofSeq (generateSamples 1500. 440.)
-    |> pack
-    |> write "test.wav"
+//Array.ofSeq (generateSamples 1500. 440.)
+//    |> pack
+//    |> write "test.wav"

@@ -13,6 +13,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "HelloFSharpLib", "HelloFSha
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NokiaComposer", "NokiaComposer\NokiaComposer.fsproj", "{A22B6996-E4ED-4AED-B562-8BCBA8955DCE}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NokiaComposer.Tests", "NokiaComposer.Tests\NokiaComposer.Tests.fsproj", "{2C57D48E-787A-4BDB-B273-0E5099CB534C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{A22B6996-E4ED-4AED-B562-8BCBA8955DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A22B6996-E4ED-4AED-B562-8BCBA8955DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A22B6996-E4ED-4AED-B562-8BCBA8955DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C57D48E-787A-4BDB-B273-0E5099CB534C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C57D48E-787A-4BDB-B273-0E5099CB534C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C57D48E-787A-4BDB-B273-0E5099CB534C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C57D48E-787A-4BDB-B273-0E5099CB534C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
