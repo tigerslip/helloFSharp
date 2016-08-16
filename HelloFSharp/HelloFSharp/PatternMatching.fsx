@@ -26,11 +26,13 @@ let fizzbuzzer i =
 // pattern matching with c# try - out function
 open System
 
-let testTryParse str = Double.TryParse(str) |>  function
-    | (_, 4.14) -> printfn "got 4.14!"
-    | (true, value) -> printfn "%f" value
+let add x y = x + y
+
+let testTryParse str = Int32.TryParse(str) |>  function
+    | (_, 4) -> printfn "got 4!"
+    | (true, value) -> add value 5 |> printfn "%i"
     | (false, _) -> printfn "could not parse"
 
-testTryParse "4.14" // out got 4.14
+testTryParse "4" // out got 4.14
 testTryParse "3"    // out 3.00000
 testTryParse "abc"  // out could not parse
