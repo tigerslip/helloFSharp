@@ -1,0 +1,6 @@
+source http://nuget.ellkay.com/nuget
+source C:\Dev\experimentalPackages
+source http://progetserver:81/nuget/Default
+source https://www.nuget.org/api/v2/
+nuget FAKE
+nuget NUnit

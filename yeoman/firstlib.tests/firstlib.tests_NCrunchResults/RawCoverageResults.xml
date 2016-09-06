@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--This is a custom NCrunch file format-->
+<solution path="C:\Dev\repos\f#\yeoman\firstlib.tests\firstlib.tests.sln">
+  <project name="firstlib.tests" path="C:\Dev\repos\f#\yeoman\firstlib.tests\firstlib.tests.fsproj">
+    <sourceFile name="firstlib.tests.fs" path="C:\Dev\repos\f#\yeoman\firstlib.tests\firstlib.tests.fs" />
+  </project>
+  <project name="firstlib" path="C:\Dev\repos\f#\yeoman\firstlib\firstlib.fsproj">
+    <sourceFile name="firstlib.fs" path="C:\Dev\repos\f#\yeoman\firstlib\firstlib.fs">
+      <line number="3" coveringTests="0" />
+      <line number="4" coveringTests="0" />
+      <line number="6" coveringTests="0" />
+    </sourceFile>
+  </project>
+</solution>

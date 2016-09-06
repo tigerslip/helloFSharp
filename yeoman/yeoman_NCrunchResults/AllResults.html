@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NCrunch Results Report</title>
+    <link href="HtmlReportData/Report.css" rel="stylesheet" type="text/css" />
+    <script src="HtmlReportData/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="HtmlReportData/Report.js" type="text/javascript"></script>
+</head>
+    <body>
+        <div id="logo"><a href="http://www.ncrunch.net"><img src="HtmlReportData/N-logo.png" width="196" height="60" style="border-width:0;" /></a></div>
+        <div id="overallHeader">
+            NCrunch Execution Run Results
+            <div id="dateStamp">Wednesday, August 31, 2016 1:38:56 PM</div>
+            <div id="solutionFile">C:\dev\repos\f#\yeoman\yeoman.sln</div>
+        </div>
+        <div id="tabHeader">
+            <a class="tab selected" id="buildResultsTab">Build Results</a>
+            <a class="tab unselected" id="resultsTab">Test Results</a>
+            <a class="tab unselected" id="coverageTab">Metrics</a>
+        </div>
+        <div id="buildResultsPanel" class="resultPanel">
+            <div class='result collapsed'>
+  <div class='resultHeader pass'>
+    <span class='name'>firstlib</span>
+    <span class='executionTime'>(00:00:00.8335703)</span>
+  </div>
+  <div class='resultSummary'>
+    <div class='field'><span class='fieldName'>Path:</span><span class='fieldValue'>C:\dev\repos\f#\yeoman\firstlib\firstlib.fsproj</span></div>
+    <div class='field'><span class='fieldName'>Result:</span><span class='fieldValue'>Build Successful</span></div>
+<br>
+<br>  </div>
+</div>
+<div class='result collapsed'>
+  <div class='resultHeader pass'>
+    <span class='name'>firstlib.tests</span>
+    <span class='executionTime'>(00:00:00.4875546)</span>
+  </div>
+  <div class='resultSummary'>
+    <div class='field'><span class='fieldName'>Path:</span><span class='fieldValue'>C:\dev\repos\f#\yeoman\firstlib.tests\firstlib.tests.fsproj</span></div>
+    <div class='field'><span class='fieldName'>Result:</span><span class='fieldValue'>Build Successful</span></div>
+<br>
+<br>  </div>
+</div>
+
+        </div>
+        <div id="resultsPanel" class="resultPanel">
+            
+            <div class="filterPanel">
+                <span id="showPassingTestsFilter" class="filter"><input type="checkbox" checked="checked" />Show passing tests</span>
+                <span id="showFailingTestsFilter" class="filter"><input type="checkbox" checked="checked" />Show failing tests</span>
+                <span id="showIgnoredTestsFilter" class="filter"><input type="checkbox" checked="checked" />Show ignored tests</span>
+                <span id="showNotRunTestsFilter" class="filter"><input type="checkbox" checked="checked" />Show tests not run</span>
+            </div>
+
+            <div class='result collapsed'>
+  <div class='resultHeader pass'>
+    <span class='name'>firstlib.tests.FirstTests+MyFirstTests.*</span>
+    <span class='executionTime'>(00:00:00)</span>
+  </div>
+  <div class='resultSummary'>
+    <div class='field'><span class='fieldName'>Project:</span><span class='fieldValue'>firstlib.tests</span></div>
+    <div class='field'><span class='fieldName'>Result:</span><span class='fieldValue'>Passed</span></div>
+    <div class='field'><span class='fieldName'>Server used:</span><span class='fieldValue'>(local)</span></div>
+    <a class='showTestOutputLink' target='_blank' href='TestOutput/5FzdUeLJvvIaHz4p7Mnug_0EUnCw_2.txt'>Show test output text</a>
+  </div>
+</div>
+<div class='result collapsed'>
+  <div class='resultHeader pass'>
+    <span class='name'>firstlib.tests.FirstTests+MyFirstTests.IsBroken</span>
+    <span class='executionTime'>(00:00:00.0140109)</span>
+  </div>
+  <div class='resultSummary'>
+    <div class='field'><span class='fieldName'>Project:</span><span class='fieldValue'>firstlib.tests</span></div>
+    <div class='field'><span class='fieldName'>Result:</span><span class='fieldValue'>Passed</span></div>
+    <div class='field'><span class='fieldName'>Server used:</span><span class='fieldValue'>(local)</span></div>
+    <a class='showTestOutputLink' target='_blank' href='TestOutput/S0tNTVdCect5cyYVzdxywIJkpII_2.txt'>Show test output text</a>
+  </div>
+</div>
+<div class='result collapsed'>
+  <div class='resultHeader pass'>
+    <span class='name'>firstlib.tests.FirstTests+MyFirstTests.IsNotBroken</span>
+    <span class='executionTime'>(00:00:00.0010016)</span>
+  </div>
+  <div class='resultSummary'>
+    <div class='field'><span class='fieldName'>Project:</span><span class='fieldValue'>firstlib.tests</span></div>
+    <div class='field'><span class='fieldName'>Result:</span><span class='fieldValue'>Passed</span></div>
+    <div class='field'><span class='fieldName'>Server used:</span><span class='fieldValue'>(local)</span></div>
+    <a class='showTestOutputLink' target='_blank' href='TestOutput/gZcXsp3sqlhtyP3wRqOuzlu_1laQ_2.txt'>Show test output text</a>
+  </div>
+</div>
+
+        </div>
+        <div id="coveragePanel" class="resultPanel">
+            <table cellspacing='0' cellpadding='0'>
+  <tr class='headerRow'>
+    <td></td>
+    <td>Code Coverage %</td>
+    <td>Compiled Lines</td>
+    <td>Covered Lines</td>
+    <td>Uncovered Lines</td>
+    <td>Code Lines</td>
+  </tr>
+<tr id='Node_0' class='childRow  solutionRow expanded'>
+  <td class='nameCell' style='padding-left:20px;background-position:5px 6px'><img src='HtmlReportData/box.png' />yeoman</td>
+  <td class='coveragePercentCell' style='color:#006900'>75.00 %</td>
+  <td class='metricCell'>4</td>
+  <td class='metricCell'>3</td>
+  <td class='metricCell'>1</td>
+  <td class='metricCell'>17</td>
+</tr>
+<tr id='Node_1' class='childRow childNode_0 projectRow collapsed'>
+  <td class='nameCell' style='padding-left:35px;background-position:20px 6px'><img src='HtmlReportData/cog.png' />firstlib</td>
+  <td class='coveragePercentCell' style='color:#000000'>0.00 %</td>
+  <td class='metricCell'>1</td>
+  <td class='metricCell'>0</td>
+  <td class='metricCell'>1</td>
+  <td class='metricCell'>4</td>
+</tr>
+<tr id='Node_2' class='childRow childNode_1 fileRow'>
+  <td class='nameCell' style='padding-left:50px;background-position:35px 6px'><img src='HtmlReportData/document.png' />firstlib.fs</td>
+  <td class='coveragePercentCell' style='color:#000000'>0.00 %</td>
+  <td class='metricCell'>1</td>
+  <td class='metricCell'>0</td>
+  <td class='metricCell'>1</td>
+  <td class='metricCell'>4</td>
+</tr>
+<tr id='Node_3' class='childRow childNode_0 projectRow collapsed'>
+  <td class='nameCell' style='padding-left:35px;background-position:20px 6px'><img src='HtmlReportData/cog.png' />firstlib.tests</td>
+  <td class='coveragePercentCell' style='color:#008C00'>100.00 %</td>
+  <td class='metricCell'>3</td>
+  <td class='metricCell'>3</td>
+  <td class='metricCell'>0</td>
+  <td class='metricCell'>13</td>
+</tr>
+<tr id='Node_4' class='childRow childNode_3 fileRow'>
+  <td class='nameCell' style='padding-left:50px;background-position:35px 6px'><img src='HtmlReportData/document.png' />Tests.fs</td>
+  <td class='coveragePercentCell' style='color:#008C00'>100.00 %</td>
+  <td class='metricCell'>3</td>
+  <td class='metricCell'>3</td>
+  <td class='metricCell'>0</td>
+  <td class='metricCell'>13</td>
+</tr>
+</table>
+
+        </div>
+    </body>
+</html>

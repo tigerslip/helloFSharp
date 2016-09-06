@@ -1,0 +1,216 @@
+body {
+    font-family:'Arial, Sans-serif';
+    font-size:11pt;
+    background-color:#FFFFFF;
+	background-image: url(bg-grey.jpg);
+}
+
+#logo {
+    float:right;
+}
+
+#overallHeader {
+    font-family:'Arial';
+    font-weight:bold;
+    font-size:18pt;
+    height:60px;
+}
+
+#solutionFile,
+#dateStamp {
+    font-family:'Arial';
+    font-size:9pt;
+}
+
+#tabHeader {
+    margin-top:20px;
+}
+
+#tabHeader .tab {
+    display:inline-block;
+    text-align:center;
+    width:150px;
+    border:1px solid #A0A0A0;
+    padding:8px;
+    margin-right:-5px;
+    background-color:#F0F0F0;
+    font-family:'Arial Black';
+}
+
+#tabHeader .tab.selected {
+    border-bottom:1px solid #FFFFFF;
+    background-color:#FFFFFF;
+}
+
+#tabHeader .tab.unselected:hover {
+    background-color:#F0F0FF;
+    cursor:pointer;
+}
+
+.resultPanel {
+    border:1px solid #A0A0A0;
+    padding:8px;
+    margin-top:-1px;
+    background-image:none;
+    background-color:#FFFFFF;
+}
+
+#coveragePanel,
+#resultsPanel {
+    display:none;
+}
+
+.resultPanel .result .resultHeader {
+    border:1px solid #D0D0D0;
+    font-weight:bold;
+    font-family:'Arial';
+    padding:2px;
+    cursor:pointer;
+}
+
+.resultPanel .result.collapsed .resultHeader .name {
+    background-image:url('plus.png');
+    background-repeat:no-repeat;
+    background-position:3px 3px;
+} 
+
+.resultPanel .result.expanded .resultHeader .name {
+    background-image:url('minus.png');
+    background-repeat:no-repeat;
+    background-position:3px 3px;
+} 
+
+.resultPanel .result .resultHeader .name {
+    font-weight:bold;
+    font-family:'Arial';
+    padding-left:18px;
+    margin-left:2px;
+}
+
+.resultPanel .result .resultHeader .executionTime {
+    vertical-align:top;
+    font-size:8pt;
+    color:#404040;
+}
+
+.resultPanel .result .resultHeader.fail {
+    background-color:#FFD0D0;
+}
+
+.resultPanel .result .resultHeader.pass {
+    background-color:#D0FFD0;
+}
+
+.resultPanel .result .resultHeader.notRun {
+    background-color:#FFF6B5;
+}
+
+.resultPanel .result .resultHeader.ignored {
+    background-color:#D0D0D0;
+}
+
+.resultPanel .result .resultSummary {
+    margin-left:20px;
+    margin-bottom:10px;
+    margin-top:5px;
+}
+
+.resultPanel .result.collapsed .resultSummary {
+    display:none;
+}
+
+.resultPanel .result.expanded .resultSummary {
+    display:block;
+}
+
+.resultPanel .result .resultSummary .fieldName {
+    font-family:'Arial';
+    margin:2px;
+    font-size:10pt;
+    width:130px;
+    display:inline-block;
+}
+
+.resultPanel .result .resultSummary .fieldValue {
+    clear:right;
+    font-family:'Consolas', 'Courier New';
+    font-size:10pt;
+}
+
+.resultPanel .result .resultSummary .exception {
+    margin-left:30px;
+    margin-top:5px;
+    font-size:9pt;
+    font-family:'Consolas', 'Courier New';
+}
+
+.resultPanel .result .resultSummary .showTestOutputLink {
+    display:inline-block;
+    margin-top:10px;
+    font-family:'Arial';
+    font-size:9pt;
+}
+
+.filterPanel {
+    margin-bottom:15px;
+}
+.filterPanel .filter {
+    font-family:'Arial';
+    padding:15px;
+}
+
+#coveragePanel .headerRow td {
+    font-family:'Arial';
+    font-weight:bold;
+    padding:4px;
+    border-bottom:1px solid #F0F0F0;
+}
+
+#coveragePanel .childRow td {
+    font-family:'Arial';
+    padding-top:2px;
+    padding-bottom:2px;
+    border-bottom:1px solid #F0F0F0;
+}
+
+#coveragePanel .childRow.solutionRow,
+#coveragePanel .childRow.projectRow,
+#coveragePanel .childRow.directoryRow {
+    cursor:pointer;
+}
+
+#coveragePanel .childRow .coveragePercentCell,
+#coveragePanel .childRow .excludedCell,
+#coveragePanel .childRow .metricCell {
+    text-align:right;
+    padding-right:10px;
+}
+
+#coveragePanel .childRow.excluded td {
+    color:#909090;
+}
+
+#coveragePanel .childRow .coveragePercentCell {
+    font-weight:bold;
+}
+
+#coveragePanel .childRow.collapsed .nameCell {
+    padding-left:10px;
+    background-image:url('plus.png');
+    background-repeat:no-repeat;
+}
+
+#coveragePanel .childRow.expanded .nameCell {
+    padding-left:10px;
+    background-image:url('minus.png');
+    background-repeat:no-repeat;
+}
+
+#coveragePanel .childRow .nameCell img {
+    padding-right:6px;
+}
+
+#coveragePanel .childRow.directoryRow,
+#coveragePanel .childRow.fileRow {
+    display:none;
+}

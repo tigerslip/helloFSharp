@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--This is a custom NCrunch file format-->
+<solution path="C:\Dev\repos\f#\yeoman\firstlib.tests\firstlib.tests.sln">
+  <project name="firstlib.tests" path="C:\Dev\repos\f#\yeoman\firstlib.tests\firstlib.tests.fsproj">
+    <loadErrors />
+    <build>
+      <buildTime>12:00:00.323</buildTime>
+      <errors>
+        <error>C:\Dev\repos\f#\yeoman\firstlib.tests\firstlib.tests.fs (1): Files in libraries or multiple-file applications must begin with a namespace or module declaration, e.g. 'namespace SomeNamespace.SubNamespace' or 'module SomeNamespace.SomeModule'. Only the last source file of an application may omit such a declaration.</error>
+      </errors>
+      <warnings />
+    </build>
+    <tests />
+  </project>
+  <project name="firstlib" path="C:\Dev\repos\f#\yeoman\firstlib\firstlib.fsproj">
+    <loadErrors />
+    <build>
+      <buildTime>12:00:00.894</buildTime>
+      <errors />
+      <warnings />
+    </build>
+    <tests />
+  </project>
+</solution>

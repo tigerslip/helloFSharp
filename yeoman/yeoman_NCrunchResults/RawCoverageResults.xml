@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--This is a custom NCrunch file format-->
+<solution path="C:\dev\repos\f#\yeoman\yeoman.sln">
+  <project name="firstlib" path="C:\dev\repos\f#\yeoman\firstlib\firstlib.fsproj">
+    <sourceFile name="firstlib.fs" path="C:\dev\repos\f#\yeoman\firstlib\firstlib.fs">
+      <line number="3" coveringTests="0" />
+    </sourceFile>
+  </project>
+  <project name="firstlib.tests" path="C:\dev\repos\f#\yeoman\firstlib.tests\firstlib.tests.fsproj">
+    <sourceFile name="Tests.fs" path="C:\dev\repos\f#\yeoman\firstlib.tests\Tests.fs">
+      <line number="5" coveringTests="1" />
+      <line number="9" coveringTests="1" />
+      <line number="13" coveringTests="1" />
+    </sourceFile>
+  </project>
+</solution>

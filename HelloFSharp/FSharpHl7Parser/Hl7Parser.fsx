@@ -14,6 +14,19 @@ type Field = { components:Component[]; }
 type Segment = { name:string; fields: Field[]; segments: Segment[] }
 type Hl7Message = { segments:Segment[] }
 
+let hl7Seps = "|&~^"
+
+let str s = pstring s
+let psub = manyChars (noneOf hl7Seps) |>> (fun res -> {value = res})
+test psub "abc&123"
+
+let plines = sepBy (restOfLine false) newline
+
+let anyString = stringReturn 
+
+// split lines by
 let hl7 = "MSH|^~\&|A|B|C
 EVN|P03|1^2^3||
 PID|1||d2~e2~f2"
+
+test plines hl7

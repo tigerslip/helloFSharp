@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!--This is a custom NCrunch file format-->
+<solution path="C:\dev\repos\f#\yeoman\yeoman.sln">
+  <project name="firstlib" path="C:\dev\repos\f#\yeoman\firstlib\firstlib.fsproj">
+    <loadErrors />
+    <build>
+      <buildTime>12:00:00.833</buildTime>
+      <errors />
+      <warnings />
+    </build>
+    <tests />
+  </project>
+  <project name="firstlib.tests" path="C:\dev\repos\f#\yeoman\firstlib.tests\firstlib.tests.fsproj">
+    <loadErrors />
+    <build>
+      <buildTime>12:00:00.487</buildTime>
+      <errors />
+      <warnings />
+    </build>
+    <tests>
+      <fixture name="firstlib.tests.FirstTests+MyFirstTests">
+        <wasRun>True</wasRun>
+        <isIgnored>False</isIgnored>
+        <setupTeardownRunTime>12:00:00.000</setupTeardownRunTime>
+        <totalRunTime>12:00:00.015</totalRunTime>
+        <fixturePassed>True</fixturePassed>
+        <server>(local)</server>
+        <test name="firstlib.tests.FirstTests+MyFirstTests.IsNotBroken">
+          <passed>True</passed>
+          <runTime>12:00:00.001</runTime>
+          <server>(local)</server>
+          <exceptions />
+        </test>
+        <test name="firstlib.tests.FirstTests+MyFirstTests.IsBroken">
+          <passed>True</passed>
+          <runTime>12:00:00.014</runTime>
+          <server>(local)</server>
+          <exceptions />
+        </test>
+      </fixture>
+    </tests>
+  </project>
+</solution>
