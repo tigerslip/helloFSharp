@@ -8,10 +8,11 @@ let test parser str =
     | Success(result, _, _) -> printfn "Success: %A" result
     | Failure(errorMsg, _, _) -> printfn "Failure: %s" errorMsg
 
-type Component = Subcomponents of string list | Value of string
-type Field = Repetitions of Component list | Values of string list
-type Segment = { childSegments : Segment option; fields : Field list; }
-type Hl7Message = { segments : Segment list }
+type Component = {subcomponents: string list}
+type SingleField = {components: Component list}
+type Field = Repetitions of SingleField list | SingleField of SingleField
+type Segment = { name:string; fields:Field list; }
+type Hl7Message = { segments:Segment list }
 
 let hl7Seps = "|&~^"
 let hl7 = "MSH|^~\&|A|B|C
@@ -19,18 +20,29 @@ EVN|P03|1^2^3||
 PID|1||d2~e2~f2"
 
 // i think the parser sepBy1 will help here -> it only succeeds if there is at least one one item seperated
+let normalChar = satisfy (fun c-> c <> '\\')
 
-let pval = manyChars (noneOf hl7Seps) |>> (fun res -> res)
+let unescape c = match c with
+                | 'F' -> '|'
+                | 'R' -> '~'
+                | 'S' -> '^'
+                | 'T' -> '&'
+                | 'E' -> '\\'
+                | c -> c
 
-let pcomp = sepBy pval (pstring "&") |>> (fun vals -> match vals.Length with 
-                                                        | 0 -> Value ""
-                                                        | 1 -> Value (vals.Item 0)
-                                                        | _ -> Subcomponents vals)
+let escapedChar = attempt (pchar '\\' >>. anyChar |>> unescape .>> skipChar '\\') <|> pchar '\\'
 
-test pcomp "a&b&c"
-let ok =  sepBy1 pval (pstring "^")
+let pHl7Element = manyCharsTill (normalChar <|> escapedChar) (anyOf hl7Seps)
 
-test ok ""                  
+let pcomp = sepBy pHl7Element (pchar '&') |>> (fun vals -> {subcomponents = vals})
+let pfield = sepBy pcomp (pchar '^') |>> (fun comps -> {components = comps})
+let pRepsOrField = sepBy pfield (pchar '~') |>> (fun fields -> if fields.Length > 1 then Repetitions fields else SingleField (fields.Item 0))
+let pheader = anyString 3 |>> (fun name -> name)
+let pSegment = pipe2 pheader (sepBy pRepsOrField (pchar '|')) (fun name repsOrFields -> {name = name; fields = repsOrFields})
+
+test pRepsOrField "ABCD^1234^A&B&C&D"
+test pSegment "EVN|P03|1^2^3||"
+
 
 //let pfield = sepBy pcomp (pstring "^") |>> (fun c -> List.map c (fun vals -> match vals with 
 //                                                                                | Subcomponents -> 
