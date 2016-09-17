@@ -28,44 +28,29 @@ let hl7Seps = "|^~\\&"
 let normalChar = noneOf hl7Seps
 
 let unescape c = match c with
-                | 'F' -> '|'
-                | 'R' -> '~'
-                | 'S' -> '^'
-                | 'T' -> '&'
-                | 'E' -> '\\'
-                | c -> c
+                    | 'F' -> '|'
+                    | 'R' -> '~'
+                    | 'S' -> '^'
+                    | 'T' -> '&'
+                    | 'E' -> '\\'
+                    | c -> c
 
 let escapedChar = attempt (pchar '\\' >>. anyChar |>> unescape .>> skipChar '\\') <|> pchar '\\'
 
-let pHl7Element = manyChars (normalChar <|> escapedChar) <!> "pelement"
+let pHl7Element = manyChars (normalChar <|> escapedChar)
 
-let pcomp = sepBy pHl7Element (pchar '&') |>> (fun vals -> List.mapi (fun i s -> {value = s; position = i}) vals) <!> "pcomp"
+let pcomp = sepBy pHl7Element (pchar '&') |>> (fun vals -> List.mapi (fun i s -> {value = s; position = i}) vals)
 
-let pfield = sepBy pcomp (pchar '^') |>> (fun comps -> List.mapi (fun i c -> {subcomponents = c; position = i}) comps) <!> "pfield"
+let pfield = sepBy pcomp (pchar '^') |>> (fun comps -> List.mapi (fun i c -> {subcomponents = c; position = i}) comps)
 
-let pRepsOrField = sepBy pfield (pchar '~') 
-                    |>> (fun fields -> match fields.Length with
-                                        | 0 | 1 -> SingleField {components = fields.Item 0; position = 0}
-                                        | _ -> Repetitions (List.mapi (fun i c -> {components = c; position = i}) fields)) <!> "prepsorfields"
+let pRepsOrField = sepBy pfield (pchar '~') |>> (fun fields -> match fields.Length with
+                                                                | 0 | 1 -> SingleField {components = fields.Item 0; position = 0}
+                                                                | _ -> Repetitions (List.mapi (fun i c -> {components = c; position = i}) fields))
 
+let pheader = anyString 3 |>> (fun name -> name)
 
-let pheader = anyString 3 |>> (fun name -> name) <!> "pheader"
-
-let pSegment = pipe2 pheader (sepBy pRepsOrField (pchar '|')) (fun name repsOrFields -> {name = name; fields = repsOrFields}) <!> "psegment"
+let pSegment = pipe2 pheader (sepBy pRepsOrField (pchar '|')) (fun name repsOrFields -> {name = name; fields = repsOrFields})
 
 test pSegment "EVN|A&1^B^C|123~456~789"
 
 let hl7 = "MSH|^~\\&|A|B|C\nEVN|P03|1^2^3&4&5||\nPID|1||d2~e2~f2"
-
-
-//let pfield = sepBy pcomp (pstring "^") |>> (fun c -> List.map c (fun vals -> match vals with 
-//                                                                                | Subcomponents -> 
-//                                                        
-//let pHeader = anyString 3
-//let pSegment = sepBy pField (pstring "|")
-//let pMsg = pipe2 pHeader pSegment (fun name fields -> {name = name; fields = fields})
-
-//test pHeader "MSH"
-//test pComponent "abcd&cdef"
-//test pField "^a&b^c"
-//test pMsg "PID|a|b^c&d"
