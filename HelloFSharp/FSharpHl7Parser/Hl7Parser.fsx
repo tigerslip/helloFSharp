@@ -39,6 +39,13 @@ let escapedChar = attempt (pchar '\\' >>. anyChar |>> unescape .>> skipChar '\\'
 
 let pHl7Element = manyChars (normalChar <|> escapedChar)
 
+let psub = pHl7Element .>> anyOf "|^"
+let psubs = many psub
+
+let pfield = pchar '|' >>. pHl7Element .>> pchar '|'
+
+test pfield "|thing|"
+
 //let pseg = many (anyOf hl7Seps >>. pHl7Element)
 
 //let pseg = skipChar '|' >>. pipe2 pHl7Element (anyOf hl7Seps) |>> (fun e s -> match s with 
@@ -48,7 +55,7 @@ let pHl7Element = manyChars (normalChar <|> escapedChar)
 // parse hl7 value -> when u hit a delim that tells u where that value belongs - you don't know until you hit the delimiter
 // but how do we manage all of this in f# ???
 
-test pseg "|A&1^B^C|123~456~789"
+//test pseg "|A&1^B^C|123~456~789"
 
 
 
