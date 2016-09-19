@@ -41,6 +41,10 @@ let pHl7Element = manyChars (normalChar <|> escapedChar)
 
 let pHl7Part c p result = sepBy p (pchar c) |>> result
 
+let mapAndFilter items result = List.mapi (fun i item -> (i, item)) >> List.filter (fun (i, item) -> item <> "") >> List.mapi result
+
+let pcomp1 = pHl7Part '&' pHl7Element (mapAndFilter (fun (i, item) -> {value = item; position = i}))
+
 let pcomp = pHl7Part '&' pHl7Element (fun vals -> List.mapi (fun i s -> {value = s; position = i}) vals)
 
 let pfield = pHl7Part '^' pcomp (fun comps -> List.mapi (fun i c -> {subcomponents = c; position = i}) comps)
@@ -49,7 +53,7 @@ let pRepsOrField = pHl7Part '~' pfield (fun fields -> match fields.Length with
                                                                 | 0 | 1 -> SingleField {components = fields.Item 0; position = 0}
                                                                 | _ -> Repetitions (List.mapi (fun i c -> {components = c; position = i}) fields))
 
-let pheader = anyString 3 |>> (fun name -> name)
+let pheader = anyString 3
 
 let pSegment = pipe2 pheader (sepBy pRepsOrField (pchar '|')) (fun name repsOrFields -> {name = name; fields = repsOrFields})
 
