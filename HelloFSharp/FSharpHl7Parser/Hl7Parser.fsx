@@ -8,56 +8,50 @@ let test parser str =
     | Success(result, _, _) -> printfn "Success: %A" result
     | Failure(errorMsg, _, _) -> printfn "Failure: %s" errorMsg
 
-//type Subcomponent =  { value:string; }
-//type Component = { subcomponents:Subcomponent list; }
-//type RepeatingField = {repitions:Component list list}
-//type NormalField = { components:Component list; }
-//type Field = NormalField | RepeatingField
-//type Segment = { name:string; fields: Field list; }
-//type Hl7Message = { segments:Segment list }
-//
-//let hl7Seps = "|&~^"
-//let hl7 = "MSH|^~\&|A|B|C
-//EVN|P03|1^2^3||
-//PID|1||d2~e2~f2"
-//
-//let pSubcomponent = manyChars (noneOf "&^|") |>> (fun res -> {value = res})
-//let pComponent = sepBy pSubcomponent (pstring "&") |>> (fun s -> {subcomponents = s})
-//let pField = sepBy pComponent (pstring "^") |>> (fun c -> {components = c})
-//let pRepetion = sepBy pField (pstring "~") >>% (fun r -> {repitions = r})
-//let pHeader = anyString 3
-//let pNormalFieldOrRepitions = pipe2 pHeader (pField <|> pRepetion) |>> (fun name res -> match res with
-//                                                            | NormalField -> {name = name; fields = res}
-//                                                            | RepeatingField -> {name = name; fields = res})
-//let pSegment = sepBy pField (pstring "|")
-//
-////let pMsg = pipe2 pHeader pSegment (fun name fields -> {name = name; fields = fields})
-//
-//test pHeader "MSH"
-//test pComponent "abcd&cdef"
-//test pField "^a&b^c"
-//test pRepetion "a^b~b~c"
-
-//test pMsg "PID|a|b^c&d"
-
-type result = {value:string; index:int}
-type otherThing = {results:result list; index:int}
+type Subcomponent = {value:string; index:int}
+type Component = {subcomponents:Subcomponent list; index:int}
+type Field = {components:Component list; index:int}
+type Repetitions = {fields:Field list; index:int}
+type FieldOrRepetitions = Field of Field | Repetitions of Repetitions
+type Segment = {name:string; fields:FieldOrRepetitions list; children:Segment list; index:int}
 
 let delims = "|^"
 
 let pipeandcarrotdata = "|A^B^C||B|C"
 
+let hl7Seps = "|^~\\&"
+
+let normalChar = noneOf hl7Seps
+let unescape c = match c with
+                    | 'F' -> '|'
+                    | 'R' -> '~'
+                    | 'S' -> '^'
+                    | 'T' -> '&'
+                    | 'E' -> '\\'
+                    | c -> c
+
+let escapedChar = attempt (pchar '\\' >>. anyChar |>> unescape .>> skipChar '\\') <|> pchar '\\'
+let pHl7Element = manyChars (normalChar <|> escapedChar)
+
 let zipi res = List.mapi (fun i item -> res i item)
-let zipPipes = zipi (fun i t -> {results = t; index = i})
-let zipCarrots = zipi (fun i t -> {value = t; index = i})
+let zipSubs = zipi (fun i s -> {value = s; index = i})
+let zipComps = zipi (fun i s -> {subcomponents = s; index = i})
+let zipFields = zipi (fun i c -> {components = c; index = i})
+let zipReps = zipi (fun i f -> {fields=f; index=i})
+let zipSegs = zipi (fun i f n c -> {name = n; fields = f; index = i; children = c}) 
 
-let cleanlist predicate = List.filter (fun i -> predicate i)
-let cleanPipes = cleanlist (fun t -> t.results.IsEmpty <> true)
-let cleanCarrots = cleanlist (fun t -> t.value <> "")
+let clean predicate = List.filter (fun i -> predicate i)
+let cleanSubs = clean (fun t -> t.value <> "")
+let cleanlist selector = clean (fun l -> (List.isEmpty (selector l)) <> true)
+let cleanComps = cleanlist (fun c -> c.subcomponents)
+let cleanFields = cleanlist (fun f -> f.components)
+let cleanReps = cleanlist (fun r -> r.fields)
 
-let collect items = List.mapi (fun i item -> {value = item; index = i}) items
-let cleanEmpties items = List.filter (fun item -> item.value <> "") items
+let pHl7Part s p zip clean = sepBy p (pstring s) |>> (zip >> clean)
+let psubs = pHl7Part "&" pHl7Element zipSubs cleanSubs
+let pcomps = pHl7Part "^" psubs zipComps cleanComps
+let preps = pHl7Part "~" pcomps 
+let pfields = pHl7Part "|" pcomps zipFields cleanFields
 
-let pCarrots = sepBy (manyChars (noneOf delims)) (pstring "^") |>> (zipCarrots >> cleanCarrots)
-let pPipes = sepBy pCarrots (pstring "|") |>> (zipPipes >> cleanPipes)
-test pPipes pipeandcarrotdata
+
+//test pSegment "EVN|A&1^B^C|123~456~789"

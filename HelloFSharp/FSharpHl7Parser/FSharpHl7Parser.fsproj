@@ -51,6 +51,7 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <None Include="soExample.fsx" />
     <None Include="Hl7Parser.fsx" />
     <Content Include="packages.config" />
   </ItemGroup>
