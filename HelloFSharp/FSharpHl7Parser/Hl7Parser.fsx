@@ -10,17 +10,13 @@ let test parser str =
 
 type Subcomponent = {value:string; index:int}
 type Component = {subcomponents:Subcomponent list; index:int}
-type Field = {components:Component list; index:int}
-type Repetitions = {fs:Field list; index:int}
-//type FieldOrRepetitions = Field of Field | Repetitions of Repetitions
-//type Segment = {name:string; fields:FieldOrRepetitions list; children:Segment list; index:int}
-type Segment = {name:string; fields:Field list}
+type Field = {components:Component list}
+type Repetitions = {repetitions:list<Component list>}
+type FieldOrRepetitions = Field of Field * index:int | Repetitions of Repetitions * index:int
+type Segment = {name:string; fields:FieldOrRepetitions list; children:Segment list}
+type Hl7Message = {segments: Segment list}
 
-let delims = "|^"
-
-let pipeandcarrotdata = "|A^B^C||B|C"
-
-let hl7Seps = "|^~\\&"
+let hl7Seps = "|^~\\&\r\n"
 
 let normalChar = noneOf hl7Seps
 let unescape c = match c with
@@ -34,27 +30,25 @@ let unescape c = match c with
 let escapedChar = attempt (pchar '\\' >>. anyChar |>> unescape .>> skipChar '\\') <|> pchar '\\'
 let pHl7Element = manyChars (normalChar <|> escapedChar)
 
-let zipi res = List.mapi (fun i item -> res i item)
-let zipSubs = zipi (fun i s -> {value = s; index = i})
-let zipComps = zipi (fun i s -> {subcomponents = s; index = i})
-let zipFields = zipi (fun i c -> {components = c; index = i})
-//let zipReps = zipi (fun i f -> {fs=f; index=i})
+let zipSubs = List.mapi (fun i s -> {value = s; index = i})
+let zipComps = List.mapi (fun i s -> {subcomponents = s; index = i})
+let zipFields = List.mapi (fun i c -> {components = c; index = i})
+let zipReps = (fun c -> {repetitions=c})
 //let zipSegs = zipi (fun i f n c -> {name = n; fields = f}) 
 
-let clean predicate = List.filter (fun i -> predicate i)
-let cleanSubs = clean (fun t -> t.value <> "")
-let cleanlist selector = clean (fun l -> (List.isEmpty (selector l)) <> true)
+let cleanSubs = List.filter (fun t -> t.value <> "")
+let cleanlist selector = List.filter (fun l -> (List.isEmpty (selector l)) <> true)
 let cleanComps = cleanlist (fun c -> c.subcomponents)
 let cleanFields = cleanlist (fun f -> f.components)
-//let cleanReps = cleanlist (fun r -> r.fields)
 
-let pHl7Part s p zip clean = sepBy p (pstring s) |>> (zip >> clean)
-let psubs = pHl7Part "&" pHl7Element zipSubs cleanSubs
-let pcomps = pHl7Part "^" psubs zipComps cleanComps
-//let preps = pHl7Part "~" pcomps (zipFields >> cleanFields) (zipReps >> cleanReps)
-let pfields = pHl7Part "|" pcomps zipFields cleanFields
+let pHl7Part s p zipclean = sepBy p (pstring s) |>> zipclean
+let psubs = pHl7Part "&" pHl7Element (zipSubs >> cleanSubs)
+let pcomps = pHl7Part "^" psubs (zipComps >> cleanComps)
+let preps = pHl7Part "~" pcomps zipReps
+let pfields = pHl7Part "|" preps (zipFields >> cleanFields)
 
 let pname = anyString 3 |>> id
-let pseg = pipe2 pname pfields (fun name fields -> {name = name; fields = fields})
+let pseg = pipe2 pname pfields (fun name fields -> {name = name; fields = fields; segments = List.empty})
+let pmsg = sepBy pseg newline |>> (fun segments -> {segments = segments})
 
-test pseg "EVN|A&1^B^C|123~456~789"
+test pmsg "EVN|A&1^B^C|123~456~789\r\nPID|A|B|C"
