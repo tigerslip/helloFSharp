@@ -12,7 +12,9 @@ type Subcomponent = {value:string; index:int}
 type Component = {subcomponents:Subcomponent list; index:int}
 type Field = {components:Component list}
 type Repetitions = {repetitions:Component list list}
-type FieldOrRepetitions = Field of Field * index:int | Repetitions of Repetitions * index:int
+type FieldOrRepetitions = 
+    | Field of Field * index:int 
+    | Repetitions of Repetitions * index:int
 type Segment = {name:string; fields:FieldOrRepetitions list; children:Segment list}
 type Hl7Message = {segments: Segment list}
 

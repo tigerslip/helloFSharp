@@ -10,10 +10,8 @@ type FieldOrRepetitions = Field of Field * index:int | Repetitions of Repetition
 type Segment = {name:string; fields:FieldOrRepetitions list; children:Segment list}
 type Hl7Message = {segments: Segment list}
 
-type Hl7Parser(hl7Seps:string) =
+let private pmsg(hl7Seps:string) = 
     
-    do (if(hl7Seps.Length <> 5) then raise (System.Exception("Hl7 seperators must be exactly 5 characters.")))
-
     let fieldSep = hl7Seps.[0]
     let repSep = hl7Seps.[1]
     let compSep = hl7Seps.[2]
@@ -51,10 +49,13 @@ type Hl7Parser(hl7Seps:string) =
 
     let pname = anyString 3 |>> id
     let pseg = pipe2 pname pRepsOrFields (fun name fields -> {name = name; fields = fields; children = List.empty})
-    let pmsg = sepBy pseg newline |>> (fun segments -> {segments = segments})
+    sepBy pseg newline |>> (fun segments -> {segments = segments})
 
-    new() = Hl7Parser("|^~\\&")
+let private getParser hl7 = 
+    let pmsgheader = (pstring "MSH") <|> (pstring "FHS")
+    let pseps = (anyString 5)
+    lookAhead (pmsgheader >>. pseps) >>= pmsg
 
-    member this.Parse hl7 = match run pmsg hl7 with
-                            | Success(result, _, _) -> result
-                            | Failure(errorMsg, _, _) -> raise(System.Exception(errorMsg))
+let Parse hl7 = match run (getParser hl7) hl7 with
+                    | Success(result, _, _) -> result
+                    | Failure(errorMsg, _, _) -> raise(System.Exception(errorMsg))
