@@ -15,17 +15,20 @@ let delims = "|^"
 
 let pipeandcarrotdata = "|A^B^C||B|C"
 
-let zipi res = List.mapi (fun i item -> res i item)
-let zipPipes = zipi (fun i t -> {results = t; index = i})
+let zipi f = List.mapi f
+let clean f = List.filter f
 let zipCarrots = zipi (fun i t -> {value = t; index = i})
 
 let cleanlist predicate = List.filter (fun i -> predicate i)
-let cleanPipes = cleanlist (fun t -> t.results.IsEmpty <> true)
 let cleanCarrots = cleanlist (fun t -> t.value <> "")
 
 let collect items = List.mapi (fun i item -> {value = item; index = i}) items
 let cleanEmpties items = List.filter (fun item -> item.value <> "") items
 
 let pCarrots = sepBy (manyChars (noneOf delims)) (pstring "^") |>> (zipCarrots >> cleanCarrots)
-let pPipes = sepBy pCarrots (pstring "|") |>> (zipPipes >> cleanPipes)
+let pPipes = 
+    let zipPipes i p = {results = p; index = i}
+    let isEmpty p = p.results.IsEmpty <> true
+    sepBy pCarrots (pstring "|") |>> (List.mapi zipPipes >> List.filter isEmpty)
+
 test pPipes pipeandcarrotdata
