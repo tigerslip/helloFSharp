@@ -1,6 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
+using Hl7.Data;
 using NUnit.Framework;
 
 namespace FSharpHl7Parser.Tests
@@ -10,7 +9,7 @@ namespace FSharpHl7Parser.Tests
         [Test]
         public void InteropTests()
         {
-            var result = Hl7Parser.Parse("MSH|~^&\\|A|B|C\r\nPID|A|B|C");
+            var result = Hl7.Parser.Parse("MSH|~^&\\|A|B|C\r\nPID|A|B|C");
             Assert.AreEqual(2, result.segments.Length);
             var firstSeg = result.segments.First();
             Assert.AreEqual("MSH", firstSeg.name);
@@ -30,7 +29,7 @@ namespace FSharpHl7Parser.Tests
             var msh = "MSH|~^&\\|A|B|C";
             var pid = "PID|A|B|C";
             var hl7 = $"{msh}\r\n{pid}";
-            var result = Hl7Parser.Parse(hl7);
+            var result = Hl7.Parser.Parse(hl7);
             Assert.AreEqual(pid, result.segments.Last().ToString());
             Assert.AreEqual(msh, result.segments.First().ToString());
         }
@@ -38,7 +37,7 @@ namespace FSharpHl7Parser.Tests
         [Test]
         public void MshFieldsAreInCorrectPosition_AccountingForWeirdMshRule()
         {
-            var result = Hl7Parser.Parse("MSH|~^&\\|A|B|C");
+            var result = Hl7.Parser.Parse("MSH|~^&\\|A|B|C");
             var seg = result.segments.Single();
             var a = seg.fields.First();
 
@@ -49,14 +48,14 @@ namespace FSharpHl7Parser.Tests
 
     public static class FieldOrRepExtensions
     {
-        public static Hl7Parser.Field GetField(this Hl7Parser.FieldOrRepetitions field)
+        public static Field GetField(this FieldOrRepetitions field)
         {
-            return ((Hl7Parser.FieldOrRepetitions.Field) field).Item;
+            return ((FieldOrRepetitions.Field) field).Item;
         }
 
-        public static Hl7Parser.Repetitions GetRepetition(this Hl7Parser.FieldOrRepetitions repetition)
+        public static Repetitions GetRepetition(this FieldOrRepetitions repetition)
         {
-            return ((Hl7Parser.FieldOrRepetitions.Repetitions)repetition).Item;
+            return ((FieldOrRepetitions.Repetitions)repetition).Item;
         }
     }
 }

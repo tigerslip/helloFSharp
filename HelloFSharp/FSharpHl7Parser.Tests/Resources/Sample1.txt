@@ -1,0 +1,5 @@
+MSH|^~\&|MM^ModernizingMedicine|derm^Barrington Park Dermatological Associates |LKBRIDGE^Ellkay|ELLKAY^Barrington Park Dermatological Associates |20150811200521||DFT^P03|20150811200521890|P|2.5.1
+EVN|P03|20150811200521
+PID||335544|911525532||Aaron^Maya^^^||19780827|F|||||||||||902917322
+PV1|1||10^^^Primary Facility^^^^^Primary Facility||||^Cane^Daniel^^MD^||||||||||||127206|||||||||||||||||||||||||||||||127206
+FT1|1|||20150811|20150811200521|CG|AFAPE^^EMA|AFA Chemical Peel||1|120.0^USD|||||10^^^Primary Facility^^^^^Primary Facility|||706.1^^I9|^Cane^Daniel^^MD^|||||AFAPE^AFA Chemical Peel^EMA||||
