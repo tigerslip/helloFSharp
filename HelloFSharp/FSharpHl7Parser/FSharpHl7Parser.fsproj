@@ -53,7 +53,6 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <None Include="soExample.fsx" />
-    <None Include="Hl7Parser.fsx" />
     <Compile Include="Hl7Parser.fs" />
     <Content Include="packages.config" />
   </ItemGroup>

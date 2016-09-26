@@ -15,17 +15,24 @@ namespace FSharpHl7Parser.Tests
             var firstSeg = result.segments.First();
             Assert.AreEqual("MSH", firstSeg.name);
 
-            var secSeg = result.segments.Last();
-            foreach (var f in secSeg.fields)
-            {
-                Console.WriteLine(f.GetField().ToString());
-            }
+            var pid = result.segments.Last();
 
-            Console.WriteLine(secSeg.fields.ToString());
-            Console.WriteLine(secSeg.ToString());
+            Assert.AreEqual("PID", pid.name);
+            Assert.AreEqual(3, pid.fields.Length);
+            Assert.AreEqual("A", pid.fields.First().GetField().ToString());
+            Assert.AreEqual("B", pid.fields.ElementAt(1).GetField().ToString());
+            Assert.AreEqual("C", pid.fields.ElementAt(2).GetField().ToString());
+        }
 
-            Assert.AreEqual("PID", secSeg.name);
-            Assert.AreEqual(3, secSeg.fields.Length);
+        [Test]
+        public void SegmentToString()
+        {
+            var msh = "MSH|~^&\\|A|B|C";
+            var pid = "PID|A|B|C";
+            var hl7 = $"{msh}\r\n{pid}";
+            var result = Hl7Parser.Parse(hl7);
+            Assert.AreEqual(pid, result.segments.Last().ToString());
+            Assert.AreEqual(msh, result.segments.First().ToString());
         }
 
         [Test]
@@ -34,7 +41,6 @@ namespace FSharpHl7Parser.Tests
             var result = Hl7Parser.Parse("MSH|~^&\\|A|B|C");
             var seg = result.segments.Single();
             var a = seg.fields.First();
-
 
             Assert.AreEqual("|", a.GetField().ToString());
             Assert.AreEqual(5, seg.fields.Length);
