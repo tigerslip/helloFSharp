@@ -25,30 +25,44 @@ module Parser =
             let escapedChar = attempt (pchar escChar >>. anyChar |>> unescape .>> skipChar escChar) <|> pchar escChar
             manyChars (normalChar <|> escapedChar)
 
+        let zipSub i s = {value = s; index = i}
+
         let psubs = 
-            let newSub i s = {value = s; index = i}
             let notEmpty s = s.value.Length > 0
-            sepBy pHl7Element (pchar subSep)  |>> (List.mapi newSub >> List.filter notEmpty)
+            sepBy pHl7Element (pchar subSep)  |>> (List.mapi zipSub >> List.filter notEmpty)
+
+        let zipComp i s = {subcomponents = s; index = i; seperator = subSep}
 
         let pcomps = 
-            let newComp i s = {subcomponents = s; index = i; seperator = subSep}
             let emptyComp c =  List.isEmpty c.subcomponents <> true
-            sepBy psubs (pchar compSep) |>> (List.mapi newComp >> List.filter emptyComp)
+            sepBy psubs (pchar compSep) |>> (List.mapi zipComp >> List.filter emptyComp)
 
         let pReps = sepBy pcomps (pchar repSep)
 
+        let zipRepsOrFields i f = match f with
+                                    | [c] -> Field({components = c; index = i; seperator = compSep})
+                                    | _ -> Repetitions({repetitions = f; index = i; seperator = repSep})
+
         let pRepsOrFields = 
-            let zipRepsOrFields i f = match f with
-                                        | [c] -> Field({components = c; index = i; seperator = compSep})
-                                        | _ -> Repetitions({repetitions = f; index = i; seperator = repSep})
             sepBy pReps (pchar fieldSep)  |>> List.mapi zipRepsOrFields
-        
+
+        let pname = anyString 3 |>> id
+        let zipSeg n f = {name = n; fields = f; children = List.empty; seperator = fieldSep}
+
         let pseg = 
-            let pname = anyString 3 |>> id
-            let zipSeg n f = {name = n; fields = f; children = List.empty; seperator = fieldSep}
             pipe2 pname ((pchar fieldSep) >>. pRepsOrFields) zipSeg
 
-        sepBy pseg newline |>> (fun segments -> {segments = segments})
+        let pheader = 
+            let packField s i = Field({components = [zipComp 0 [zipSub 0 s]]; index = i; seperator = compSep})
+            let packHeaderFields = [packField "|" 0; packField hl7Seps.[1..4] 1]
+            let ziphead name fields = zipSeg name (List.append packHeaderFields fields)
+            let phead = pname .>> (pstring (sprintf "%s|" hl7Seps))
+            pipe2 phead pRepsOrFields ziphead
+
+        let pSegs = sepBy pseg newline
+        let packSegs h s = List.append [h] s
+        let zipSegs segs = {segments = segs}
+        pipe2 (pheader .>> newline) pSegs (fun a b -> zipSegs (packSegs a b))
 
     let private parserInit hl7 = 
         let pmsgheader = (pstring "MSH") <|> (pstring "FHS")

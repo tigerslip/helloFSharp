@@ -1,6 +1,6 @@
 ﻿namespace Hl7.Data
 
-module private Printing = 
+module Printing = 
     let hl7tostring f c = f |> Seq.map (sprintf "%O") |> String.concat (c.ToString())
 
 type Subcomponent = {value:string; index:int}
