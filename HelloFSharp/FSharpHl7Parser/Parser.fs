@@ -64,11 +64,24 @@ module Parser =
         let zipSegs segs = {segments = segs}
         pipe2 (pheader .>> newline) pSegs (fun a b -> zipSegs (packSegs a b))
 
-    let private parserInit hl7 = 
+    let private parserInit = 
         let pmsgheader = (pstring "MSH") <|> (pstring "FHS")
         let pseps = (anyString 5)
         lookAhead (pmsgheader >>. pseps) >>= pmsg
 
-    let Parse hl7 = match run (parserInit hl7) hl7 with
+    let pSeps =
+        let pmsgheader = (pstring "MSH") <|> (pstring "FHS")
+        let pseps = (anyString 5)
+        pmsgheader >>. pseps
+
+    let private runParser p hl7 = match run p hl7 with
+                                    | Success(result, _, _) -> result
+                                    | Failure(errorMsg, _, _) -> raise(System.Exception(errorMsg))
+
+    let GetSeperators hl7 = runParser pSeps hl7
+
+    //let Parse2 hl7 = runParser (pmsg (runParser GetSeperators hl7) hl7)
+
+    let Parse hl7 = match run parserInit hl7 with
                         | Success(result, _, _) -> result
                         | Failure(errorMsg, _, _) -> raise(System.Exception(errorMsg))
