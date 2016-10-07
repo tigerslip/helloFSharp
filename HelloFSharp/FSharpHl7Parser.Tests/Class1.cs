@@ -7,15 +7,6 @@ namespace FSharpHl7Parser.Tests
     public class Class1
     {
         [Test]
-        [TestCase("MSH|~^&\\|", '|', '~', '^', '&', '\\')]
-        public void ParseHeaders(string hl7, char fieldSep, char repSep, char compSep, char subCompSep, char escapeChar)
-        {
-            
-
-            Assert.Fail("not implemented");
-        }
-
-        [Test]
         public void InteropTests()
         {
             var result = Hl7.Parser.Parse("MSH|~^&\\|A|B|C\r\nPID|A|B|C");
