@@ -4,11 +4,16 @@ open NUnit.Framework
 open Hl7
 open Hl7.Data
 
-let sampleMsh = "MSH|^~\\&|MM^ModernizingMedicine\r\nPID|A|B|C"
+let sampleMsh = "MSH|^~\\&|MM^ModernizingMedicine|B\r\nPID|A|B|C"
 
 let msg = Parser.Parse sampleMsh
 let msh = msg.segments.[0]
 let pid = msg.segments.[1]
+
+let assertField field =
+    match field with
+     | Field{components = c; index = i; seperator = s} -> c
+     | _ -> raise (System.Exception("expected a field"))
 
 [<Test>]
 let ``first delimiter is in field 0`` ()=
@@ -19,12 +24,17 @@ let ``next 4 delimiters are in field 1`` ()=
     Assert.AreEqual("^~\\&", msh.fields.[1].ToString())
 
 [<Test>]
+let ``is pid 1 a field?`` ()=
+    let f = assertField pid.fields.[0]
+    Assert.AreEqual("A", (f.Item 0).ToString())
+
+[<Test>]
 let ``data starts in field 2`` ()=
-    match msh.fields.[2] with
-      | Field{components = c; index = i; seperator = s} -> 
-        Assert.AreEqual("MM", c.Item 0)
-        Assert.AreEqual("ModernizingMedicine", c.Item 1)
-      | _ -> Assert.Fail("expected a field")
+    let b = assertField msh.fields.[3]
+    Assert.AreEqual("B", (b.Item 0).ToString())
+    let m = assertField msh.fields.[2]
+    Assert.AreEqual("MM", m.Item 0)
+    Assert.AreEqual("ModernizingMedicine", m.Item 1)
     Assert.AreEqual("MM^ModernizingMedicine", msh.fields.[2].ToString())
 
 [<Test>]
