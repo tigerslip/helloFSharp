@@ -51,8 +51,9 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="ParsingSubcomponents.fs" />
+    <Compile Include="ParsingComponents.fs" />
     <Compile Include="ParsingTests.fs" />
-    <Compile Include="ParsingHl7BasicElement.fs" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
