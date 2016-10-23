@@ -56,6 +56,7 @@
     <Compile Include="Data.fs" />
     <Compile Include="RunParsers.fs" />
     <Compile Include="Subcomponents.fs" />
+    <Compile Include="Components.fs" />
     <Compile Include="Parser.fs" />
     <Content Include="packages.config" />
   </ItemGroup>

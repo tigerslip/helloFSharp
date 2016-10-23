@@ -2,6 +2,7 @@
 
 open Hl7.Data
 open Hl7.Subcomponents.Parser
+open Hl7.Components.Parser
 open FParsec
 open RunParsers
 
@@ -10,13 +11,7 @@ module Parser =
     let private pmsg(hl7Seps:string) = 
         let fsep,csep,ssep,rsep,esc = (seps hl7Seps)
 
-        let zipComp i s = {subcomponents = s; index = i; seperator = ssep}
-
-        let pcomps = 
-            let emptyComp c =  List.isEmpty c.subcomponents <> true
-            sepBy (psubs (seps hl7Seps)) (pchar csep) |>> (List.mapi zipComp >> List.filter emptyComp)
-
-        let pReps = sepBy pcomps (pchar rsep)
+        let pReps = sepBy (pcomps (seps hl7Seps)) (pchar rsep)
 
         let zipRepsOrFields i f = match f with
                                     | [c] -> Field({components = c; index = i; seperator = csep})
